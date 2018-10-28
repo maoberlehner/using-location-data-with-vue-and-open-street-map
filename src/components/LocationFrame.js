@@ -16,7 +16,7 @@ export default {
     async fetchAddress() {
       try {
         this.setLoadingState();
-        this.address = await locationService.address();
+        this.address = await locationService.currentAddress();
         // Reset the loading state after fetching the address.
         this.loading = false;
       } catch (error) {

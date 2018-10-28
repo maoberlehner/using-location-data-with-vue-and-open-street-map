@@ -3,7 +3,7 @@ import axios from 'axios';
 const ENDPOINT = `https://nominatim.openstreetmap.org/reverse`;
 const FORMAT = `jsonv2`;
 
-export function coordinates() {
+export function currentCoordinates() {
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => resolve(coords),
@@ -14,8 +14,7 @@ export function coordinates() {
   });
 }
 
-export async function address() {
-  const { latitude, longitude } = await coordinates();
+export async function addressByCoordinates({ latitude, longitude }) {
   const { data } = await axios.get(ENDPOINT, {
     params: {
       format: FORMAT,
@@ -25,4 +24,10 @@ export async function address() {
   });
 
   return data.address;
+}
+
+export async function currentAddress() {
+  const coordinates = await currentCoordinates();
+
+  return addressByCoordinates(coordinates);
 }
